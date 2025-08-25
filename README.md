@@ -1,0 +1,2 @@
+# legalai
+Analyze legal documents
