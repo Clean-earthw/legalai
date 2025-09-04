@@ -1,1 +1,2 @@
-from .document_store import init_clients,DocumentStore
+
+from .document_store import init_clients,UserDocumentStore

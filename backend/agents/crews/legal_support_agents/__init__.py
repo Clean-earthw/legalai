@@ -1,3 +1,3 @@
-from .legal_support_agents import LegalSupportAgents,create_legal_support_system
+from .legal_support_agents import UserLegalSupportAgents,create_user_legal_support_system
 
 __all__ = ["LegalSupportAgents"] 
