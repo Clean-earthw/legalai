@@ -4,7 +4,7 @@ A sophisticated legal support system that combines TiDB vector search, advanced 
 
 ## 🏗️ Architecture Overview
 
-[Architecture Diagram - To be added]
+![Alt text](/path/to/img.jpg)
 
 The system consists of three main layers:
 
