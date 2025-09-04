@@ -4,7 +4,7 @@ A sophisticated legal support system that combines TiDB vector search, advanced 
 
 ## 🏗️ Architecture Overview
 
-![Alt text](/path/to/img.jpg)
+![Architecture diagram](https://github.com/Clean-earthw/legalai/blob/main/docs/architecture.jpg)
 
 The system consists of three main layers:
 
