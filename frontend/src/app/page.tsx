@@ -1,12 +1,19 @@
-import React from 'react'
-import Home from '@/components/Home'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
+import Navbar from '@/components/Navbar'
+import Hero from '@/components/Hero'
 
-const LandingPage = () => {
+export default async function HomePage() {
+  const { userId } = await auth()
+  
+  if (userId) {
+    redirect('/dashboard')
+  }
+
   return (
-    <div>
-      <Home/>
+    <div className="min-h-screen">
+      <Navbar />
+      <Hero />
     </div>
   )
 }
-
-export default LandingPage

@@ -1,14 +1,16 @@
 'use client'
 import React, { useState, useRef, useCallback } from 'react';
-import { apiService, UploadResult } from '@/lib/service';
+import { AuthenticatedApiService,UploadResult } from '@/services/apiService';
 
 interface FileUploadProps {
+  apiService: AuthenticatedApiService;
   onUploadSuccess: (result: UploadResult) => void;
   isUploading: boolean;
   setIsUploading: (uploading: boolean) => void;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ 
+  apiService,
   onUploadSuccess, 
   isUploading, 
   setIsUploading 
@@ -35,18 +37,18 @@ const FileUpload: React.FC<FileUploadProps> = ({
     if (files.length > 0) {
       await uploadFile(files[0]);
     }
-  }, [documentName]);
+  }, [documentName, apiService]);
 
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       await uploadFile(files[0]);
     }
-  }, [documentName]);
+  }, [documentName, apiService]);
 
   const uploadFile = async (file: File) => {
     // Validate file type
-    const allowedTypes = ['.pdf', '.docx'];
+    const allowedTypes = ['.pdf', '.docx', '.txt'];
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
     
     if (!allowedTypes.includes(fileExtension)) {
@@ -63,7 +65,15 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
     setIsUploading(true);
     try {
-      const result = await apiService.uploadDocument(file, documentName);
+      // Determine document type from file extension
+      const documentType = fileExtension.substring(1); // Remove the dot
+      
+      const result = await apiService.uploadDocument(
+        file, 
+        documentName || file.name, 
+        documentType
+      );
+      
       onUploadSuccess(result);
       setDocumentName('');
       if (fileInputRef.current) {
@@ -108,7 +118,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           ref={fileInputRef}
           type="file"
           className="hidden"
-          accept=".pdf,.docx"
+          accept=".pdf,.docx,.txt"
           onChange={handleFileSelect}
           disabled={isUploading}
         />
@@ -125,7 +135,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
               Drop your document here or click to browse
             </p>
             <p className="text-sm text-gray-500">
-              Supports PDF and DOCX files (max 50MB)
+              Supports PDF, DOCX, and TXT files (max 50MB)
             </p>
           </>
         )}
